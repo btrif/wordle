@@ -163,7 +163,7 @@ if __name__ == '__main__':
 
         case = 'initialization of the options loop'
         while case not in {'I', 'E', 'W', 'C', 'F'}:
-            case = input("Please choose a letter from I, E, W, C, F : ")
+            case = input("Please choose an option from I, E, W, C, F : ")
 
             ### CASE 1.  Letters which are within word, either green or yellow ( either good or bad position )
             if case == 'I':
