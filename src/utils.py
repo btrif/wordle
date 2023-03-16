@@ -18,7 +18,7 @@ def get_word(
     return db.query(WordleModel).filter(WordleModel.word == word).first()
 
 
-def get_all_words(
+def get_all_words_query(
         db: Session,
         ):
     return db.query(WordleModel).all()
@@ -180,7 +180,7 @@ if __name__ == '__main__':
     if not os.path.isfile(DB_URL):
         raise Exception("\033[91m Database does NOT exists !")
 
-    all_words = get_all_words(current_session_local)
+    all_words = get_all_words_query(current_session_local)
     print(all_words)
 
 '''             === SQLITE3 IMPLEMENTETATION FOR REGEXP     ===

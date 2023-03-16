@@ -14,7 +14,7 @@ from utils import current_session_local, process_filtered_result_into_set, \
     exact_letter_positions_helper, exclude_letter_positions_helper, Colors, process_exact_matches, \
     process_input_letter_digit_into_dictionary, update_dictionary_of_non_positions
 
-from utils import get_all_words, only_words_containing_letters
+from utils import get_all_words_query, only_words_containing_letters
 import re
 
 letter_digit_pattern = "[a-z][0-4](,[a-z][0-4])*"  # matches : e3    or     e3,g4,k2  ...
@@ -146,7 +146,7 @@ def print_options():
 
 if __name__ == '__main__':
 
-    query_words = get_all_words(current_session_local)
+    query_words = get_all_words_query(current_session_local)
     all_words_set = process_filtered_result_into_set(query_words)
 
     word = 'word initialization'
