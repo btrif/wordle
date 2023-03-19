@@ -14,7 +14,7 @@ from utils import current_session_local, process_filtered_result_into_set, \
     exact_letter_positions_helper, exclude_letter_positions_helper, Colors, process_exact_matches, \
     process_input_letter_digit_into_dictionary, update_dictionary_of_non_positions
 
-from utils import get_all_words_query, only_words_containing_letters
+from utils import get_all_words_query, only_words_containing_letters_helper
 import re
 
 letter_digit_pattern = "[a-z][0-4](,[a-z][0-4])*"  # matches : e3    or     e3,g4,k2  ...
@@ -29,7 +29,7 @@ def include_letters(all_included_letters, all_words_set):
             matched_letters.split(',')
             )  # this excludes non-letter characters
     all_included_letters |= set(matched_letters)
-    all_words_set = only_words_containing_letters(all_words_set, all_included_letters)
+    all_words_set = only_words_containing_letters_helper(all_words_set, all_included_letters)
     print(f"{all_included_letters}")
     print(
             f"\nWORDS: \n{all_words_set}   \n\nThere are {len(all_words_set)} words containing letters "

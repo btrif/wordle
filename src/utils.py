@@ -41,7 +41,7 @@ def process_filtered_result_into_set(query_result: list):
     return matched_words
 
 
-def only_words_containing_letters(word_set: set, letters: set):
+def only_words_containing_letters_helper(word_set: set, letters: set):
     words_with = set()
     for word in word_set:
         diff_letters = letters - set(word)
