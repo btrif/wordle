@@ -153,10 +153,6 @@ def check_only_one_position_left_for_letter(letter:str, all_correct_position_let
     # Returns the set of all the positions in which letter is excluded
     excluded_positions = { pos for pos, letters_list in all_wrong_position_letters.items()  for l in letters_list if l ==letter }
 
-    # # Case in which you have a letter position in both lists :
-    # if len(positions_available & excluded_positions) > 0 :
-    #     raise ValueError(f"You have letter {letter} in both excluded position and also to an exact position")
-
     if len(positions_available - excluded_positions) == 1 :
         return True
 
@@ -234,13 +230,9 @@ if __name__ == '__main__':
                                     all_correct_position_letters,
                                     all_wrong_position_letters
                                     )
-        '''
-        word_guess = input(
-                "Press " + Colors.fg.lightblue + "ENTER to continue " + Colors.reset + Colors.fg.lightred +
-                "or type the word if you want to finish: " + Colors.reset
-                )
-        '''
+
         if len(all_words_set) == 1 :
             print("\n\nC O N G R A T U L A T I O N S   ! ! !")
-            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + str(all_words_set) + Colors.reset)
+            found_word = str(list(all_words_set)[0])
+            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + found_word + Colors.reset)
             break
