@@ -160,6 +160,26 @@ def check_only_one_position_left_for_letter(letter:str, all_correct_position_let
 
 
 
+def contratulations_finish_decorator(check_words_function):
+    def wrapper(*args):
+        if check_words_function(*args) :
+            found_word = str(list(*args)[0])
+            print(f"----- {check_words_function.__name__}: end -----")
+            print("\n\nC O N G R A T U L A T I O N S   ! ! !")
+            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + found_word + Colors.reset)
+        return check_words_function(*args)
+    return wrapper
+
+
+
+@contratulations_finish_decorator
+def check_only_one_word_remaining(all_words: set) -> bool:
+    '''checks if we have a single word remaining in the all_words_set '''
+    if len(all_words) == 1 :
+        return True
+    return False
+
+
 if __name__ == '__main__':
 
     query_words = get_all_words_query(current_session_local)  # query DB SQLite3
@@ -184,6 +204,8 @@ if __name__ == '__main__':
 
         for position, letter in enumerate(word):
             # We check if it is necessary to process the current letter
+
+
             if (letter not in all_excluded_letters or position not in all_correct_position_letters or letter not in
                     all_wrong_position_letters[position]):
                 print(
@@ -231,8 +253,12 @@ if __name__ == '__main__':
                                     all_wrong_position_letters
                                     )
 
-        if len(all_words_set) == 1 :
-            print("\n\nC O N G R A T U L A T I O N S   ! ! !")
-            found_word = str(list(all_words_set)[0])
-            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + found_word + Colors.reset)
-            break
+            if check_only_one_word_remaining(all_words_set) :
+                break
+
+        # if check_only_one_word_remaining(all_words_set):
+        # # if len(all_words_set) == 1 :
+        # #     print("\n\nC O N G R A T U L A T I O N S   ! ! !")
+        # #     found_word = str(list(all_words_set)[0])
+        # #     print("you found the word : " + Colors.bg.black + Colors.fg.yellow + found_word + Colors.reset)
+        #     break
