@@ -184,10 +184,10 @@ if __name__ == '__main__':
 
     query_words = get_all_words_query(current_session_local)  # query DB SQLite3
     all_words_set = process_filtered_result_into_set(query_words)  # Store all 5-letter words in a set
-    print(all_words_set)
+    # Word characteristics TODO : To put in a DataClass
     all_excluded_letters = set()                    #{ 'a', 'b', 'c'}
-    all_correct_position_letters = dict()       # Data structure : { 4: 'e', 1:  'r', 2: 'i' }
-    all_wrong_position_letters = dict()     # {4: ['e'], 1: ['e', 'r'], 2: ['i']}
+    all_correct_position_letters = dict()       # Dict : { 4: 'e', 1:  'r', 2: 'i' }
+    all_wrong_position_letters = dict()     # Dict:  {4: ['e'], 1: ['e', 'r'], 2: ['i']}
     word_letters = set()
 
     for choice in range(1, 8):
@@ -195,7 +195,7 @@ if __name__ == '__main__':
         if choice == 7:
             print("\n" + Colors.bg.red + "You lost. You exhausted all the 6 tries." + Colors.reset)
 
-        # Happy Ending
+        # Happy Ending, the word was found
         if check_only_one_word_remaining(all_words_set) :
             break
 
@@ -204,13 +204,11 @@ if __name__ == '__main__':
             word = input(
                     "\n" + Colors.bg.black + Colors.fg.lightcyan + str(
                         choice
-                        ) + '.  Enter a valid 5-letter word: ' + Colors.reset
+                        ) + '.  Enter a valid 5-letter word:' + Colors.reset +' '
                     )
 
         for position, letter in enumerate(word):
             # We check if it is necessary to process the current letter
-
-
             if (letter not in all_excluded_letters or position not in all_correct_position_letters or letter not in
                     all_wrong_position_letters[position]):
                 print(
@@ -233,7 +231,7 @@ if __name__ == '__main__':
                                 all_correct_position_letters,
                                 all_wrong_position_letters
                                 )
-                else :
+                else :  #TODO Inclusion-Exclusion Function Dialog
                     inclusion_exclusion_choice = False
                     while inclusion_exclusion_choice not in {"I", "E", ""}:
                         print_inclusion_exclusion(letter)
