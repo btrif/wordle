@@ -165,7 +165,7 @@ def contratulations_finish_decorator(check_words_function):
         if check_words_function(*args) :
             found_word = str(list(*args)[0])
             print(f"----- {check_words_function.__name__}: end -----")
-            print("\n\nC O N G R A T U L A T I O N S   ! ! !")
+            print("\n\n" + Colors.bg.lightgreen + "C O N G R A T U L A T I O N S   ! ! !"+Colors.reset)
             print("you found the word : " + Colors.bg.black + Colors.fg.yellow + found_word + Colors.reset)
         return check_words_function(*args)
     return wrapper
@@ -185,14 +185,19 @@ if __name__ == '__main__':
     query_words = get_all_words_query(current_session_local)  # query DB SQLite3
     all_words_set = process_filtered_result_into_set(query_words)  # Store all 5-letter words in a set
     print(all_words_set)
-    all_excluded_letters = set()
-    all_correct_position_letters = dict()  # Data structure : { 4: 'e', 1:  'r', 2: 'i' }
-    all_wrong_position_letters = dict()  # {4: ['e'], 1: ['e', 'r'], 2: ['i']}
+    all_excluded_letters = set()                    #{ 'a', 'b', 'c'}
+    all_correct_position_letters = dict()       # Data structure : { 4: 'e', 1:  'r', 2: 'i' }
+    all_wrong_position_letters = dict()     # {4: ['e'], 1: ['e', 'r'], 2: ['i']}
     word_letters = set()
 
     for choice in range(1, 8):
-        if choice == 7:  # Did not find the word in 6 tries
+        # Fail Ending,   Did not find the word in 6 tries
+        if choice == 7:
             print("\n" + Colors.bg.red + "You lost. You exhausted all the 6 tries." + Colors.reset)
+
+        # Happy Ending
+        if check_only_one_word_remaining(all_words_set) :
+            break
 
         word = 'word initialization'
         while word not in all_words_set:
@@ -253,12 +258,3 @@ if __name__ == '__main__':
                                     all_wrong_position_letters
                                     )
 
-            if check_only_one_word_remaining(all_words_set) :
-                break
-
-        # if check_only_one_word_remaining(all_words_set):
-        # # if len(all_words_set) == 1 :
-        # #     print("\n\nC O N G R A T U L A T I O N S   ! ! !")
-        # #     found_word = str(list(all_words_set)[0])
-        # #     print("you found the word : " + Colors.bg.black + Colors.fg.yellow + found_word + Colors.reset)
-        #     break
