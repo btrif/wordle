@@ -1,6 +1,8 @@
 #  Created by btrif Trif on 09-03-2023 , 1:05 PM.
 import os
 import re
+import string
+from typing import Union
 
 from sqlalchemy.orm import Session, sessionmaker
 
@@ -72,7 +74,12 @@ def exact_letter_positions_helper(words_set: set, positions: dict):
 
 
 def exclude_letter_positions_helper(words_set: set, non_positions: dict):
-    '''  non_positions = {0: ['e'], 2: ['e'], 4: ['r','d']} '''
+    ''' It takes the words_Set and uses the wrong positions letters to exclude the words which have those letters.
+    Example : Taking the word_set : ['brook', 'broth', 'grook', 'grout', 'troth', 'trout']. Now we choose the letter
+     o to exclude from position 3: It will result in the reduced set :    ['broth', 'grout', 'troth', 'trout']
+     because letter o was marked as not being at position 3. thus the words ['brook',  'grook'] will be excluded.
+
+    non_positions = {0: ['e'], 2: ['e'], 4: ['r','d']} '''
     excluded_set = set()
     for word in words_set:
         bools_set = set()
@@ -95,8 +102,7 @@ def process_input_letter_digit_into_dictionary(word_letters: list) -> dict:
 
 
 def update_dictionary_of_non_positions(all_excluded: dict, new_excluded: dict) -> dict:
-    '''
-
+    ''' Adds a new letter to a position of excluded letters.
     :param all_excluded: looks like [ 0: ['a', 'b', 'e'], 2 : ['r', 't', 'q']  ]
     :param new_excluded:    looks like : [ 0: ['a', 'b', 'e'], 2 : ['r', 't', 'q']  ]
     :return:
@@ -122,6 +128,14 @@ def process_exact_matches(exact_pos: list) -> dict:
         digit = int(elem[1])
         exact_matches[digit] = elem[0]
     return exact_matches
+
+def words_containing_given_letter(letter:str, all_words_set: set) -> Union[set] :
+    words_with_letter = set()
+    for word in all_words_set:
+        if letter in word:
+            words_with_letter.add(word)
+    return words_with_letter
+
 
 
 class Colors:
@@ -203,3 +217,26 @@ cursor.execute(stmt)
 
 print(cursor.fetchall())
 '''
+
+
+if __name__ == '__main__':
+    query_words = get_all_words_query(current_session_local)  # query DB SQLite3
+    all_words_set = process_filtered_result_into_set(query_words)  # Store all 5-letter words in a set
+    most_letters = dict()
+    for letter in string.ascii_lowercase :
+        words_with_letter = words_containing_given_letter(letter, all_words_set)
+        how_many = len(words_with_letter)
+        print(f"{letter}.   {how_many}    {words_with_letter}")
+        most_letters[letter] = how_many
+
+    sorted_most_letters = sorted(most_letters.items(), key = lambda x:x[1])
+    print(f"most_letters: \n{sorted_most_letters}")
+
+    words_e = words_containing_given_letter('e', all_words_set)
+    words_a = words_containing_given_letter('a', words_e)
+    words_r = words_containing_given_letter('r', words_a)
+    words_o = words_containing_given_letter('o', words_r)
+    words_t = words_containing_given_letter('t', words_o)
+    print(words_t)
+
+
