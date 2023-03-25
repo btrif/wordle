@@ -19,6 +19,7 @@ There are 1575 words with letters in WRONG positions {0: ['o']}
 pos: 1.  letter: r  from word orate
 
 Press ENTER to continue or ... Press
+
 E to EXCLUDE or I to INCLUDE the letter r: I
 
 Press ENTER to continue or ... Press
