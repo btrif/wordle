@@ -15,7 +15,7 @@ from utils import current_session_local, process_filtered_result_into_set, \
 
 from utils import get_all_words_query
 
-
+'''
 def filter_exclude_letters(all_excluded_letters: set, all_words_set: set) -> set:
     print("\n---- EXCLUDE LETTERS  ----")
     print(f"currently EXCLUDED letters :  {all_excluded_letters} ")
@@ -28,7 +28,7 @@ def filter_exclude_letters(all_excluded_letters: set, all_words_set: set) -> set
             f"... \n"
             )
     return all_words_set
-
+'''
 
 def print_all_words_set(all_words_set, all_exact_positions, all_wrong_positions, all_excluded_letters):
     print(f"\nAll the words available with :\n {all_words_set}")
@@ -37,6 +37,7 @@ def print_all_words_set(all_words_set, all_exact_positions, all_wrong_positions,
     print(f"all_excluded_letters: {all_excluded_letters}")
 
 
+"""
 def filter_large_word_set_with_wrong_position_letters(all_wrong_positions: dict, all_words_set: set) -> set:
     '''  Given the wrong positions letters removes the words which have letters in those positions
     all_wrong_position_letters = { 0:["a","t","y"], 2:["s","n"] , 4:["u"] }
@@ -53,6 +54,7 @@ def filter_large_word_set_with_wrong_position_letters(all_wrong_positions: dict,
     return all_words_set
 
 
+
 def filter_large_word_set_with_correct_position_letters(all_exact_positions: dict, all_words_set: set) -> set:
     ''' Given the word letter exact positions returns the set with words which contain the given letters
         in that exact position
@@ -67,7 +69,7 @@ def filter_large_word_set_with_correct_position_letters(all_exact_positions: dic
             f"{all_exact_positions} ... \n"
             )
     return all_words_set
-
+"""
 
 def add_exact_position(letter: str, position: int, all_correct_position_letters: dict) -> dict:
     ''' Adds a letter to a correct position
@@ -89,11 +91,12 @@ def add_wrong_position(letter: str, position: int, all_wrong_position_letters: d
 
 
 def print_remaining_words(all_excluded_letters, all_correct_position_letters, all_wrong_position_letters, word_letters, all_words_set):
-    print(f"\nWORDS: \n{sorted(all_words_set)}   \n\nThere are {len(all_words_set)} words without letters ")
+    print(f"\nWORDS: \n{sorted(all_words_set)}")
+    print("There are " + Colors.bold + Colors.bg.yellow + f"{len(all_words_set)}" + Colors.reset + " words with conditions: ")
     print(f"word_letters : {word_letters}")
-    print(f"all_excluded_letters : {all_excluded_letters}")
-    print(f"all_correct_position_letters : {all_correct_position_letters}")
-    print(f"all_wrong_position_letters : {all_wrong_position_letters}")
+    print(f"excluded_letters : {all_excluded_letters}")
+    print(f"correct_position_letters : {all_correct_position_letters}")
+    print(f"wrong_position_letters : {all_wrong_position_letters}")
 
 
 def print_inclusion_exclusion(letter):
@@ -131,18 +134,14 @@ def correct_or_wrong_position_letter_dialog(letter, position, all_words_set, all
                 all_correct_position_letters = add_exact_position(
                         letter, position, all_correct_position_letters
                         )
-                all_words_set = filter_large_word_set_with_correct_position_letters(
-                        all_correct_position_letters, all_words_set
-                        )
+                all_words_set = exact_letter_positions_helper(all_words_set, all_correct_position_letters)
 
             ### WRONG Position
             if correct_wrong_position_choice == 'W':
                 all_wrong_position_letters = add_wrong_position(
                         letter, position, all_wrong_position_letters
                         )
-                all_words_set = filter_large_word_set_with_wrong_position_letters(
-                        all_wrong_position_letters, all_words_set
-                        )
+                all_words_set = exclude_letter_positions_helper(all_wrong_position_letters, all_words_set)
 
     return all_words_set, all_correct_position_letters, all_wrong_position_letters
 
@@ -207,6 +206,8 @@ if __name__ == '__main__':
         if check_only_one_word_remaining(all_words_set) :
             break
 
+        print_remaining_words(all_excluded_letters, all_correct_position_letters, all_wrong_position_letters, word_letters, all_words_set)
+
         word = 'word initialization'
         while word not in all_words_set:
             word = input(
@@ -248,7 +249,7 @@ if __name__ == '__main__':
                         ### EXCLUDE letter
                         if inclusion_exclusion_choice == "E":
                             all_excluded_letters.add(letter)
-                            all_words_set = filter_exclude_letters(all_excluded_letters, all_words_set)
+                            all_words_set = exclude_letters_from_word_helper(all_excluded_letters, all_words_set)
                             print(f'all_excluded_letters : {all_excluded_letters}')
 
                         ### INCLUDE letter
