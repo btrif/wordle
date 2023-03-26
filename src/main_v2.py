@@ -14,6 +14,17 @@ from utils import current_session_local, process_query_result_into_set, \
     exact_letter_positions_filter, exclude_letter_positions_filter, Colors, only_words_containing_letters_filter
 
 from utils import get_all_words_query
+from dataclasses import dataclass
+
+@dataclass
+class WordCharacteristics():
+    all_words_set : set                                 # {'tuple', 'maybe', 'later'}
+    all_excluded_letters : set                      #{ 'a', 'b', 'c'}
+    word_letters : set                                  #{ 'a', 'b', 'c'}
+    all_correct_position_letters : dict          # Dict : { 4: 'e', 1:  'r', 2: 'i' }
+    all_wrong_position_letters : dict           # Dict:  {4: ['e'], 1: ['e', 'r'], 2: ['i']}
+
+
 
 
 def print_all_words_set(all_exact_positions, all_wrong_positions, all_excluded_letters, all_words_set):
@@ -177,11 +188,11 @@ if __name__ == '__main__':
 
     query_words = get_all_words_query(current_session_local)  # query DB SQLite3
     all_words_set = process_query_result_into_set(query_words)  # Store all 5-letter words in a set
-    # Word characteristics TODO : To put in a DataClass
+    # Word characteristics
+    word_letters = set()                            #{ 'a', 'b', 'c'}
     all_excluded_letters = set()                    #{ 'a', 'b', 'c'}
     all_correct_position_letters = dict()       # Dict : { 4: 'e', 1:  'r', 2: 'i' }
     all_wrong_position_letters = dict()     # Dict:  {4: ['e'], 1: ['e', 'r'], 2: ['i']}
-    word_letters = set()
 
     for choice in range(1, 8):
         # Fail Ending,   Did not find the word in 6 tries

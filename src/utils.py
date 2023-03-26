@@ -43,8 +43,9 @@ def process_query_result_into_set(query_result: list):
     return matched_words
 
 
-def only_words_containing_letters_filter(word_set: set, letters: set):
-    ''' Returns the set of words which contains only letters'''
+def only_words_containing_letters_filter(word_set: set, letters: set) -> set:
+    ''' Filter: Returns the set of words which contains only letters
+        Example:     letters = {'a', 'n', 't'} . Returns only words containing these letters.      '''
     words_with = set()
     for word in word_set:
         diff_letters = letters - set(word)
@@ -63,7 +64,8 @@ def exclude_letters_from_word_filter(letters: set, words_set: set) -> set:
 
 
 def exact_letter_positions_filter(words_set: set, positions: dict):
-    '''positions = {3: 'e'}'''
+    '''Filter : Matches the exact position of letters within word and retains only those words.
+            positions = {3: 'e'}'''
     filtered_set = set()
     for word in words_set:
 
@@ -73,7 +75,7 @@ def exact_letter_positions_filter(words_set: set, positions: dict):
     return filtered_set
 
 
-def exclude_letter_positions_filter(non_positions: dict, words_set: set):
+def exclude_letter_positions_filter(non_positions: dict, words_set: set) ->set :
     ''' It takes the words_Set and uses the wrong positions letters to exclude the words which have those letters.
     Example : Taking the word_set : ['brook', 'broth', 'grook', 'grout', 'troth', 'trout']. Now we choose the letter
      o to exclude from position 3: It will result in the reduced set :    ['broth', 'grout', 'troth', 'trout']
