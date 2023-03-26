@@ -34,7 +34,7 @@ def get_word_regex(
     return db.query(WordleModel).filter(WordleModel.word.like(expression)).all()
 
 
-def process_filtered_result_into_set(query_result: list):
+def process_query_result_into_set(query_result: list):
     '''Translates the query result into a set of words where we will use string filtering methods '''
     matched_words = set()
     for count, wrd in enumerate(query_result):
@@ -43,7 +43,7 @@ def process_filtered_result_into_set(query_result: list):
     return matched_words
 
 
-def only_words_containing_letters_helper(word_set: set, letters: set):
+def only_words_containing_letters_filter(word_set: set, letters: set):
     ''' Returns the set of words which contains only letters'''
     words_with = set()
     for word in word_set:
@@ -53,8 +53,8 @@ def only_words_containing_letters_helper(word_set: set, letters: set):
     return words_with
 
 
-def exclude_letters_from_word_helper( letters: set, words_set: set) -> set:
-    ''' Take an entire words_set and exclude words with do not contain letters'''
+def exclude_letters_from_word_filter(letters: set, words_set: set) -> set:
+    ''' Filter : Take an entire words_set and exclude words with do not contain letters'''
     new_set = set()
     for word in words_set:
         if not set(word) & letters:
@@ -62,7 +62,7 @@ def exclude_letters_from_word_helper( letters: set, words_set: set) -> set:
     return new_set
 
 
-def exact_letter_positions_helper(words_set: set, positions: dict):
+def exact_letter_positions_filter(words_set: set, positions: dict):
     '''positions = {3: 'e'}'''
     filtered_set = set()
     for word in words_set:
@@ -73,7 +73,7 @@ def exact_letter_positions_helper(words_set: set, positions: dict):
     return filtered_set
 
 
-def exclude_letter_positions_helper(non_positions: dict, words_set: set):
+def exclude_letter_positions_filter(non_positions: dict, words_set: set):
     ''' It takes the words_Set and uses the wrong positions letters to exclude the words which have those letters.
     Example : Taking the word_set : ['brook', 'broth', 'grook', 'grout', 'troth', 'trout']. Now we choose the letter
      o to exclude from position 3: It will result in the reduced set :    ['broth', 'grout', 'troth', 'trout']
@@ -221,7 +221,7 @@ print(cursor.fetchall())
 
 if __name__ == '__main__':
     query_words = get_all_words_query(current_session_local)  # query DB SQLite3
-    all_words_set = process_filtered_result_into_set(query_words)  # Store all 5-letter words in a set
+    all_words_set = process_query_result_into_set(query_words)  # Store all 5-letter words in a set
     most_letters = dict()
     for letter in string.ascii_lowercase :
         words_with_letter = words_containing_given_letter(letter, all_words_set)

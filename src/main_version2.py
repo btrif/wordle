@@ -9,26 +9,12 @@
 #########################################
 import string
 
-from utils import current_session_local, process_filtered_result_into_set, \
-    exclude_letters_from_word_helper, \
-    exact_letter_positions_helper, exclude_letter_positions_helper, Colors, only_words_containing_letters_helper
+from utils import current_session_local, process_query_result_into_set, \
+    exclude_letters_from_word_filter, \
+    exact_letter_positions_filter, exclude_letter_positions_filter, Colors, only_words_containing_letters_filter
 
 from utils import get_all_words_query
 
-'''
-def filter_exclude_letters(all_excluded_letters: set, all_words_set: set) -> set:
-    print("\n---- EXCLUDE LETTERS  ----")
-    print(f"currently EXCLUDED letters :  {all_excluded_letters} ")
-
-    all_words_set = exclude_letters_from_word_helper(all_excluded_letters, all_words_set)
-    print(f"{all_excluded_letters}")
-    print(
-            f"\nWORDS: \n{sorted(all_words_set)}   \n\nThere are {len(all_words_set)} words without letters "
-            f"{all_excluded_letters} "
-            f"... \n"
-            )
-    return all_words_set
-'''
 
 def print_all_words_set(all_exact_positions, all_wrong_positions, all_excluded_letters, all_words_set):
     print(f"\nAll the words available with :\n {all_words_set}")
@@ -37,39 +23,6 @@ def print_all_words_set(all_exact_positions, all_wrong_positions, all_excluded_l
     print(f"all_excluded_letters: {all_excluded_letters}")
 
 
-"""
-def filter_large_word_set_with_wrong_position_letters(all_wrong_positions: dict, all_words_set: set) -> set:
-    '''  Given the wrong positions letters removes the words which have letters in those positions
-    all_wrong_position_letters = { 0:["a","t","y"], 2:["s","n"] , 4:["u"] }
-    '''
-    print("\n---- LETTERS IN WRONG POSITION ----")
-    print(f"Currently we have wrong_positions : {all_wrong_positions}")
-
-    all_words_set = exclude_letter_positions_helper(all_wrong_positions, all_words_set)
-    print(
-            f"\nWORDS: \n{sorted(all_words_set)}   "
-            f"\n\nThere are {len(all_words_set)} words with letters in WRONG positions {all_wrong_positions}"
-            )
-
-    return all_words_set
-
-
-
-def filter_large_word_set_with_correct_position_letters(all_exact_positions: dict, all_words_set: set) -> set:
-    ''' Given the word letter exact positions returns the set with words which contain the given letters
-        in that exact position
-        Example : all_correct_position_letters = { 0:"t", 2 : "f", 3 :"e" }
-    '''
-    print("\n---- LETTERS IN EXACT POSITION ----")
-    print(f"Currently we have : {all_exact_positions}")
-
-    all_words_set = exact_letter_positions_helper(all_words_set, all_exact_positions)
-    print(
-            f"\nWORDS: \n{sorted(all_words_set)}   \n\nThere are {len(all_words_set)} words with exact positions "
-            f"{all_exact_positions} ... \n"
-            )
-    return all_words_set
-"""
 
 def add_exact_position(letter: str, position: int, all_correct_position_letters: dict) -> dict:
     ''' Adds a letter to a correct position
@@ -134,14 +87,14 @@ def correct_or_wrong_position_letter_dialog(letter, position, all_correct_positi
                 all_correct_position_letters = add_exact_position(
                         letter, position, all_correct_position_letters
                         )
-                all_words_set = exact_letter_positions_helper(all_words_set, all_correct_position_letters)
+                all_words_set = exact_letter_positions_filter(all_words_set, all_correct_position_letters)
 
             ### WRONG Position
             if correct_wrong_position_choice == 'W':
                 all_wrong_position_letters = add_wrong_position(
                         letter, position, all_wrong_position_letters
                         )
-                all_words_set = exclude_letter_positions_helper(all_wrong_position_letters, all_words_set)
+                all_words_set = exclude_letter_positions_filter(all_wrong_position_letters, all_words_set)
 
     return all_words_set, all_correct_position_letters, all_wrong_position_letters
 
@@ -158,14 +111,14 @@ def inclusion_exclusion_letter_dialog(letter, position, all_excluded_letters, al
         ### EXCLUDE letter
         if inclusion_exclusion_choice == "E":
             all_excluded_letters.add(letter)
-            all_words_set = exclude_letters_from_word_helper(all_excluded_letters, all_words_set)
+            all_words_set = exclude_letters_from_word_filter(all_excluded_letters, all_words_set)
             print(f'all_excluded_letters : {all_excluded_letters}')
 
         ### INCLUDE letter
         elif inclusion_exclusion_choice == "I":
             word_letters.add(letter)
             # Filter only words which contain the already found word letters.
-            all_words_set = only_words_containing_letters_helper(all_words_set, word_letters)
+            all_words_set = only_words_containing_letters_filter(all_words_set, word_letters)
             all_words_set, all_correct_position_letters, all_wrong_position_letters = \
                 correct_or_wrong_position_letter_dialog(
                         letter,
@@ -223,7 +176,7 @@ def check_only_one_word_remaining(all_words: set) -> bool:
 if __name__ == '__main__':
 
     query_words = get_all_words_query(current_session_local)  # query DB SQLite3
-    all_words_set = process_filtered_result_into_set(query_words)  # Store all 5-letter words in a set
+    all_words_set = process_query_result_into_set(query_words)  # Store all 5-letter words in a set
     # Word characteristics TODO : To put in a DataClass
     all_excluded_letters = set()                    #{ 'a', 'b', 'c'}
     all_correct_position_letters = dict()       # Dict : { 4: 'e', 1:  'r', 2: 'i' }

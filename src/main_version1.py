@@ -9,12 +9,12 @@
 #########################################
 import string
 
-from utils import current_session_local, process_filtered_result_into_set, \
-    exclude_letters_from_word_helper, \
-    exact_letter_positions_helper, exclude_letter_positions_helper, Colors, process_exact_matches, \
+from utils import current_session_local, process_query_result_into_set, \
+    exclude_letters_from_word_filter, \
+    exact_letter_positions_filter, exclude_letter_positions_filter, Colors, process_exact_matches, \
     process_input_letter_digit_into_dictionary, update_dictionary_of_non_positions
 
-from utils import get_all_words_query, only_words_containing_letters_helper
+from utils import get_all_words_query, only_words_containing_letters_filter
 import re
 
 letter_digit_pattern = "[a-z][0-4](,[a-z][0-4])*"  # matches : e3    or     e3,g4,k2  ...
@@ -29,7 +29,7 @@ def include_letters(all_included_letters, all_words_set):
             matched_letters.split(',')
             )  # this excludes non-letter characters
     all_included_letters |= set(matched_letters)
-    all_words_set = only_words_containing_letters_helper(all_words_set, all_included_letters)
+    all_words_set = only_words_containing_letters_filter(all_words_set, all_included_letters)
     print(f"{all_included_letters}")
     print(
             f"\nWORDS: \n{all_words_set}   \n\nThere are {len(all_words_set)} words containing letters "
@@ -49,7 +49,7 @@ def exclude_letters(all_excluded_letters, all_words_set):
             excluded_letters.split(',')
             )  # this excludes non-letter characters
     all_excluded_letters |= set(excluded_letters)
-    all_words_set = exclude_letters_from_word_helper(all_words_set, all_excluded_letters)
+    all_words_set = exclude_letters_from_word_filter(all_words_set, all_excluded_letters)
     print(f"{all_excluded_letters}")
     print(
             f"\nWORDS: \n{all_words_set}   \n\nThere are {len(all_words_set)} words without letters "
@@ -82,7 +82,7 @@ def wrong_position_letters(all_wrong_positions, all_words_set):
         all_wrong_positions = update_dictionary_of_non_positions(all_wrong_positions, non_positions)
         print(f"all_non_positions : {all_wrong_positions}")
 
-        all_words_set = exclude_letter_positions_helper(all_words_set, all_wrong_positions)
+        all_words_set = exclude_letter_positions_filter(all_words_set, all_wrong_positions)
         print(
                 f"\nWORDS: \n{all_words_set}   \n\nThere are {len(all_words_set)} words without non_positions "
                 f"{all_wrong_positions} ... \n"
@@ -109,7 +109,7 @@ def correct_position_letters(all_exact_positions, all_words_set):
         all_exact_positions.update(exact_positions)
         print(f"{all_exact_positions}")
 
-        all_words_set = exact_letter_positions_helper(all_words_set, all_exact_positions)
+        all_words_set = exact_letter_positions_filter(all_words_set, all_exact_positions)
         print(
                 f"\nWORDS: \n{all_words_set}   \n\nThere are {len(all_words_set)} words with exact positions "
                 f"{all_exact_positions} ... \n"
@@ -147,7 +147,7 @@ def print_options():
 if __name__ == '__main__':
 
     query_words = get_all_words_query(current_session_local)
-    all_words_set = process_filtered_result_into_set(query_words)
+    all_words_set = process_query_result_into_set(query_words)
 
     word = 'word initialization'
     while len(word) != 5:
