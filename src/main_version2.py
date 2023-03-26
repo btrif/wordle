@@ -30,7 +30,7 @@ def filter_exclude_letters(all_excluded_letters: set, all_words_set: set) -> set
     return all_words_set
 '''
 
-def print_all_words_set(all_words_set, all_exact_positions, all_wrong_positions, all_excluded_letters):
+def print_all_words_set(all_exact_positions, all_wrong_positions, all_excluded_letters, all_words_set):
     print(f"\nAll the words available with :\n {all_words_set}")
     print(f"all_exact_positions: {all_exact_positions}")
     print(f"all_wrong_positions: {all_wrong_positions}")
@@ -118,7 +118,7 @@ def print_inclusion_good_or_bad_position():
         )
 
 
-def correct_or_wrong_position_letter_dialog(letter, position, all_words_set, all_correct_position_letters, all_wrong_position_letters):
+def correct_or_wrong_position_letter_dialog(letter, position, all_correct_position_letters, all_wrong_position_letters, all_words_set):
     if position in all_correct_position_letters :
         if all_correct_position_letters[position] == letter :
             pass
@@ -144,6 +144,39 @@ def correct_or_wrong_position_letter_dialog(letter, position, all_words_set, all
                 all_words_set = exclude_letter_positions_helper(all_wrong_position_letters, all_words_set)
 
     return all_words_set, all_correct_position_letters, all_wrong_position_letters
+
+
+
+def inclusion_exclusion_letter_dialog(letter, position, all_excluded_letters, all_correct_position_letters, word_letters, all_wrong_position_letters, all_words_set):
+    ''' Dialog for Inclusion / Exclusion of letter'''
+
+    inclusion_exclusion_choice = False
+    while inclusion_exclusion_choice not in {"I", "E", ""}:
+        print_inclusion_exclusion(letter)
+        inclusion_exclusion_choice = input()
+
+        ### EXCLUDE letter
+        if inclusion_exclusion_choice == "E":
+            all_excluded_letters.add(letter)
+            all_words_set = exclude_letters_from_word_helper(all_excluded_letters, all_words_set)
+            print(f'all_excluded_letters : {all_excluded_letters}')
+
+        ### INCLUDE letter
+        elif inclusion_exclusion_choice == "I":
+            word_letters.add(letter)
+            # Filter only words which contain the already found word letters.
+            all_words_set = only_words_containing_letters_helper(all_words_set, word_letters)
+            all_words_set, all_correct_position_letters, all_wrong_position_letters = \
+                correct_or_wrong_position_letter_dialog(
+                        letter,
+                        position,
+                        all_correct_position_letters,
+                        all_wrong_position_letters,
+                        all_words_set
+                        )
+
+    return all_excluded_letters, all_correct_position_letters, word_letters, all_wrong_position_letters, all_words_set
+
 
 
 def check_only_one_position_left_for_letter(letter:str, all_correct_position_letters:dict, all_wrong_position_letters:dict ) -> bool:
@@ -229,39 +262,19 @@ if __name__ == '__main__':
                     # No need to write its position if we can deduce it from what we have.
                     if check_only_one_position_left_for_letter(letter, all_correct_position_letters, all_wrong_position_letters):
                         all_correct_position_letters = add_exact_position(letter , position, all_correct_position_letters)
-                        print_all_words_set(all_words_set, all_correct_position_letters, all_wrong_position_letters, all_excluded_letters)
+                        print_all_words_set(all_correct_position_letters, all_wrong_position_letters, all_excluded_letters, all_words_set)
 
-                    else :
+                    else :      # Correct / Wrong Position Letter Dialog
                         print("Letter ", letter, "is already within word. So we need only to establish its position")
-                        all_words_set, all_correct_position_letters, all_wrong_position_letters =  correct_or_wrong_position_letter_dialog(
-                                letter,
-                                position,
-                                all_words_set,
-                                all_correct_position_letters,
-                                all_wrong_position_letters
+                        all_words_set, all_correct_position_letters, all_wrong_position_letters =  \
+                            correct_or_wrong_position_letter_dialog(letter,
+                                                                    position,
+                                                                    all_correct_position_letters,
+                                                                    all_wrong_position_letters,
+                                                                    all_words_set)
+                else :  # Inclusion/ Exclusion Function Dialog
+                    all_excluded_letters, all_correct_position_letters, word_letters, all_wrong_position_letters, all_words_set = \
+                        inclusion_exclusion_letter_dialog(
+                                letter, position, all_excluded_letters, all_correct_position_letters, word_letters,
+                                all_wrong_position_letters, all_words_set
                                 )
-                else :  #TODO Inclusion-Exclusion Function Dialog
-                    inclusion_exclusion_choice = False
-                    while inclusion_exclusion_choice not in {"I", "E", ""}:
-                        print_inclusion_exclusion(letter)
-                        inclusion_exclusion_choice = input()
-
-                        ### EXCLUDE letter
-                        if inclusion_exclusion_choice == "E":
-                            all_excluded_letters.add(letter)
-                            all_words_set = exclude_letters_from_word_helper(all_excluded_letters, all_words_set)
-                            print(f'all_excluded_letters : {all_excluded_letters}')
-
-                        ### INCLUDE letter
-                        elif inclusion_exclusion_choice == "I":
-                            word_letters.add(letter)
-                            # Filter only words which contain the already found word letters.
-                            all_words_set = only_words_containing_letters_helper(all_words_set, word_letters)
-                            all_words_set, all_correct_position_letters, all_wrong_position_letters =  correct_or_wrong_position_letter_dialog(
-                                    letter,
-                                    position,
-                                    all_words_set,
-                                    all_correct_position_letters,
-                                    all_wrong_position_letters
-                                    )
-
