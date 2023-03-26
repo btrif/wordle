@@ -53,7 +53,7 @@ def only_words_containing_letters_helper(word_set: set, letters: set):
     return words_with
 
 
-def exclude_letters_from_word_helper(words_set: set, letters: set) -> set:
+def exclude_letters_from_word_helper( letters: set, words_set: set) -> set:
     ''' Take an entire words_set and exclude words with do not contain letters'''
     new_set = set()
     for word in words_set:
@@ -73,7 +73,7 @@ def exact_letter_positions_helper(words_set: set, positions: dict):
     return filtered_set
 
 
-def exclude_letter_positions_helper(words_set: set, non_positions: dict):
+def exclude_letter_positions_helper(non_positions: dict, words_set: set):
     ''' It takes the words_Set and uses the wrong positions letters to exclude the words which have those letters.
     Example : Taking the word_set : ['brook', 'broth', 'grook', 'grout', 'troth', 'trout']. Now we choose the letter
      o to exclude from position 3: It will result in the reduced set :    ['broth', 'grout', 'troth', 'trout']

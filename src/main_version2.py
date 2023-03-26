@@ -20,7 +20,7 @@ def filter_exclude_letters(all_excluded_letters: set, all_words_set: set) -> set
     print("\n---- EXCLUDE LETTERS  ----")
     print(f"currently EXCLUDED letters :  {all_excluded_letters} ")
 
-    all_words_set = exclude_letters_from_word_helper(all_words_set, all_excluded_letters)
+    all_words_set = exclude_letters_from_word_helper(all_excluded_letters, all_words_set)
     print(f"{all_excluded_letters}")
     print(
             f"\nWORDS: \n{sorted(all_words_set)}   \n\nThere are {len(all_words_set)} words without letters "
@@ -44,7 +44,7 @@ def filter_large_word_set_with_wrong_position_letters(all_wrong_positions: dict,
     print("\n---- LETTERS IN WRONG POSITION ----")
     print(f"Currently we have wrong_positions : {all_wrong_positions}")
 
-    all_words_set = exclude_letter_positions_helper(all_words_set, all_wrong_positions)
+    all_words_set = exclude_letter_positions_helper(all_wrong_positions, all_words_set)
     print(
             f"\nWORDS: \n{sorted(all_words_set)}   "
             f"\n\nThere are {len(all_words_set)} words with letters in WRONG positions {all_wrong_positions}"
@@ -86,6 +86,14 @@ def add_wrong_position(letter: str, position: int, all_wrong_position_letters: d
     all_wrong_position_letters[position].append(letter)
 
     return all_wrong_position_letters
+
+
+def print_remaining_words(all_excluded_letters, all_correct_position_letters, all_wrong_position_letters, word_letters, all_words_set):
+    print(f"\nWORDS: \n{sorted(all_words_set)}   \n\nThere are {len(all_words_set)} words without letters ")
+    print(f"word_letters : {word_letters}")
+    print(f"all_excluded_letters : {all_excluded_letters}")
+    print(f"all_correct_position_letters : {all_correct_position_letters}")
+    print(f"all_wrong_position_letters : {all_wrong_position_letters}")
 
 
 def print_inclusion_exclusion(letter):
