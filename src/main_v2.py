@@ -168,7 +168,6 @@ def contratulations_finish_decorator(check_words_function):
     def wrapper(*args):
         if check_words_function(*args) :
             found_word = str(list(*args)[0])
-            print(f"----- {check_words_function.__name__}: end -----")
             print("\n\n" + Colors.bg.lightgreen + "C O N G R A T U L A T I O N S   ! ! !"+Colors.reset)
             print("you found the word : " + Colors.bg.black + Colors.fg.yellow + found_word + Colors.reset)
         return check_words_function(*args)
@@ -229,7 +228,7 @@ if __name__ == '__main__':
                         print_all_words_set(all_correct_position_letters, all_wrong_position_letters, all_excluded_letters, all_words_set)
 
                     else :      # Correct / Wrong Position Letter Dialog
-                        print("Letter ", letter, "is already within word. So we need only to establish its position")
+                        print("\nLetter ", letter, "is already within word. So we need only to establish its position")
                         all_words_set, all_correct_position_letters, all_wrong_position_letters =  \
                             correct_or_wrong_position_letter_dialog(letter,
                                                                     position,
