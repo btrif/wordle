@@ -1,0 +1,78 @@
+There are 5757 words with conditions:
+word_letters : set()
+excluded_letters : set()
+correct_position_letters : {}
+wrong_position_letters : {}
+
+1.  Enter a valid 5-letter word: untie
+pos: 0.  letter: u  from word untie
+
+Press ENTER to continue or ... Press
+E to EXCLUDE or I to INCLUDE the letter u: I
+
+Press ENTER to continue or ... Press
+C for CORRECT or W for WRONG the letter u on position 0 : W
+pos: 1.  letter: n  from word untie
+
+Press ENTER to continue or ... Press
+E to EXCLUDE or I to INCLUDE the letter n: I
+
+Press ENTER to continue or ... Press
+C for CORRECT or W for WRONG the letter n on position 1 : W
+pos: 2.  letter: t  from word untie
+
+Press ENTER to continue or ... Press
+E to EXCLUDE or I to INCLUDE the letter t: E
+all_excluded_letters : {'t'}
+pos: 3.  letter: i  from word untie
+
+Press ENTER to continue or ... Press
+E to EXCLUDE or I to INCLUDE the letter i: E
+all_excluded_letters : {'i', 't'}
+pos: 4.  letter: e  from word untie
+
+Press ENTER to continue or ... Press
+E to EXCLUDE or I to INCLUDE the letter e: E
+all_excluded_letters : {'i', 'e', 't'}
+
+WORDS:
+['bonus', 'bosun', 'bound', 'brung', 'bunch', 'bunco', 'bunds', 'bungs', 'bunko', 'bunks', 'bunny', 'burns', 'chunk', 'churn', 'clung', 'clunk', 'cornu', 'drunk', 'dungs', 'dungy', 'dunks', 'dunno', 'fauna', 'fauns', 'flung', 'flunk', 'fondu', 'found', 'funds', 'fungo', 'funks', 'funky', 'funny', 'gluon', 'guano', 'gunks', 'gunky', 'gunny', 'hound', 'human', 'hunch', 'hunks', 'hunky', 'junco', 'junks', 'junky', 'klunk', 'lunar', 'lunch', 'lungs', 'mound', 'mourn', 'munch', 'mungs', 'mungy', 'muons', 'nouns', 'nulls', 'numbs', 'nurbs', 'plunk', 'pound', 'punch', 'punks', 'punky', 'punny', 'round', 'rungs', 'runny', 'sauna', 'shuns', 'skunk', 'slung', 'slunk', 'sound', 'spunk', 'spurn', 'sunny', 'sunup', 'swung', 'wound', 'wrung', 'young', 'yourn']
+There are 84 words with conditions:
+word_letters : {'u', 'n'}
+excluded_letters : {'i', 'e', 't'}
+correct_position_letters : {}
+wrong_position_letters : {0: ['u'], 1: ['n']}
+
+2.  Enter a valid 5-letter word: lunar
+pos: 0.  letter: l  from word lunar
+
+Press ENTER to continue or ... Press
+E to EXCLUDE or I to INCLUDE the letter l: E
+all_excluded_letters : {'i', 'e', 'l', 't'}
+pos: 1.  letter: u  from word lunar
+Letter  u is already within word. So we need only to establish its position
+
+Press ENTER to continue or ... Press
+C for CORRECT or W for WRONG the letter u on position 1 : C
+pos: 2.  letter: n  from word lunar
+Letter  n is already within word. So we need only to establish its position
+
+Press ENTER to continue or ... Press
+C for CORRECT or W for WRONG the letter n on position 2 : W
+pos: 3.  letter: a  from word lunar
+
+Press ENTER to continue or ... Press
+E to EXCLUDE or I to INCLUDE the letter a: I
+
+Press ENTER to continue or ... Press
+C for CORRECT or W for WRONG the letter a on position 3 : W
+pos: 4.  letter: r  from word lunar
+
+Press ENTER to continue or ... Press
+E to EXCLUDE or I to INCLUDE the letter r: E
+all_excluded_letters : {'e', 'l', 't', 'i', 'r'}
+----- check_only_one_word_remaining: end -----
+
+
+C O N G R A T U L A T I O N S   ! ! !
+you found the word : guano
