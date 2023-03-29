@@ -200,45 +200,67 @@ if __name__ == '__main__':
     all_words = get_all_words_query(current_session_local)
     print(all_words)
 
-'''             === SQLITE3 IMPLEMENTETATION FOR REGEXP     ===
-You must make a method called regexp in order to use it with SQLite3
 
-import sqlite3
-import re
+class Score():
+    def __init__(self, all_words):
+        self.all_words = all_words
+        self.letter_scores = self.all_letters_score()
 
-def regexp(expr, item):
-    reg = re.compile(expr)
-    return reg.search(item) is not None
 
-conn = sqlite3.connect('thunderbird_manufacturing.db')
-conn.create_function("REGEXP", 2, regexp)
-cursor = conn.cursor()
+    def all_letters_score(self) -> dict:
+        ''' The letter score represents in how many words a given letter is present. It must be only present,
+        it does not
+            count if that letter is repeated in that word'''
+        most_letters = dict()
+        for letter in string.ascii_lowercase:
+            words_with_letter = words_containing_given_letter(letter, self.all_words)
+            how_many = len(words_with_letter)
+            print(f"{letter}.   {how_many}    {words_with_letter}")
+            most_letters[letter] = how_many
 
-stmt="SELECT * FROM CUSTOMER WHERE ADDRESS REGEXP \'.*(Blvd|St)$\'"
-cursor.execute(stmt)
+        return most_letters     # return sorted(most_letters.items(), key=lambda x: x[1], reverse=True)
 
-print(cursor.fetchall())
-'''
+
+    def word_score(self, word: str) -> int:
+        '''Computes the score of the word by summing how many times the letters appear in all the words.
+        thus we have a non-normalized probability of appearance'''
+        score = 0
+        for letter in set(word):
+            score += self.letter_scores[letter]
+        return score
+
+
+    def all_words_score(self) -> dict:
+        words_score = dict()
+        for word in self.all_words:
+            words_score[word] = self.word_score(word)
+
+        return sorted(words_score.items(), key=lambda x: x[1], reverse=False)
+
+
 
 
 if __name__ == '__main__':
     query_words = get_all_words_query(current_session_local)  # query DB SQLite3
     all_words_set = process_query_result_into_set(query_words)  # Store all 5-letter words in a set
-    most_letters = dict()
-    for letter in string.ascii_lowercase :
-        words_with_letter = words_containing_given_letter(letter, all_words_set)
-        how_many = len(words_with_letter)
-        print(f"{letter}.   {how_many}    {words_with_letter}")
-        most_letters[letter] = how_many
 
-    sorted_most_letters = sorted(most_letters.items(), key = lambda x:x[1])
-    print(f"most_letters: \n{sorted_most_letters}")
+    score = Score(all_words_set)
+    sorted_most_letters = score.letter_scores
+    print(f"\nmost_letters: \n{sorted_most_letters}")
 
-    words_e = words_containing_given_letter('e', all_words_set)
-    words_a = words_containing_given_letter('a', words_e)
-    words_r = words_containing_given_letter('r', words_a)
-    words_o = words_containing_given_letter('o', words_r)
-    words_t = words_containing_given_letter('t', words_o)
-    print(words_t)
+    five_letters = ['e', 'a', 'o', 's', 't' ]
+    word5 = all_words_set.copy()
+    for letter in five_letters :
+        word5 = words_containing_given_letter(letter, word5)
+
+    print(f"\nwords with most probability : {word5}")
+
+
+    print(f"word score ")
+    print(f" yogas   {score.word_score('yogas')}")
+    print(f" stoae   {score.word_score('stoae')}")
+
+    print(score.all_words_score())
+
 
 

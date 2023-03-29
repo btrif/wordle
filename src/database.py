@@ -30,3 +30,26 @@ def get_db() :
         yield db
     finally :
         db.close()
+
+
+
+
+'''             === SQLITE3 IMPLEMENTETATION FOR REGEXP     ===
+You must make a method called regexp in order to use it with SQLite3
+
+import sqlite3
+import re
+
+def regexp(expr, item):
+    reg = re.compile(expr)
+    return reg.search(item) is not None
+
+conn = sqlite3.connect('thunderbird_manufacturing.db')
+conn.create_function("REGEXP", 2, regexp)
+cursor = conn.cursor()
+
+stmt="SELECT * FROM CUSTOMER WHERE ADDRESS REGEXP \'.*(Blvd|St)$\'"
+cursor.execute(stmt)
+
+print(cursor.fetchall())
+'''

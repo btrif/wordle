@@ -167,16 +167,16 @@ def check_only_one_position_left_for_letter(letter:str, all_correct_position_let
 def contratulations_finish_decorator(check_words_function):
     def wrapper(*args):
         if check_words_function(*args) :
-            found_word = str(list(*args)[0])
+            found_word, tries = list(args)
             print("\n\n" + Colors.bg.lightgreen + "C O N G R A T U L A T I O N S   ! ! !"+Colors.reset)
-            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + found_word + Colors.reset)
+            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + list(found_word)[0] + Colors.reset + f" in {tries} tries" )
         return check_words_function(*args)
     return wrapper
 
 
 
 @contratulations_finish_decorator
-def check_only_one_word_remaining(all_words: set) -> bool:
+def check_only_one_word_remaining(all_words: set, choice: int) -> bool:
     '''checks if we have a single word remaining in the all_words_set '''
     if len(all_words) == 1 :
         return True
@@ -199,7 +199,7 @@ if __name__ == '__main__':
             print("\n" + Colors.bg.red + "You lost. You exhausted all the 6 tries." + Colors.reset)
 
         # Happy Ending, the word was found
-        if check_only_one_word_remaining(all_words_set) :
+        if check_only_one_word_remaining(all_words_set, choice) :
             break
 
         print_remaining_words(all_excluded_letters, all_correct_position_letters, all_wrong_position_letters, word_letters, all_words_set)
