@@ -64,20 +64,20 @@ def print_remaining_words(all_excluded_letters, all_correct_position_letters, al
 
 
 def print_inclusion_exclusion(letter):
-    print("\nPress ENTER to continue or ... Press ")
+    print("\nPress Enter to continue or ... Press ")
     print(
-            Colors.bold + Colors.fg.lightblue + "E" + Colors.reset + " to EXCLUDE or " +
-            Colors.fg.lightblue + Colors.bold + "I" + Colors.reset + " to INCLUDE the letter" + Colors.reset + " " +
+            Colors.bold + Colors.fg.lightblue + "E" + Colors.reset + " to Exclude or " +
+            Colors.fg.lightblue + Colors.bold + "I" + Colors.reset + " to Include the letter" + Colors.reset + " " +
             Colors.fg.blue + Colors.bold + letter + Colors.reset + ": ",
             end=""
             )
 
 
 def print_inclusion_good_or_bad_position():
-    print("\nPress ENTER to continue or ... Press")
+    print("\nPress Enter to continue or ... Press")
     print(
-        Colors.bold + Colors.fg.lightblue + "C" + Colors.reset + " for CORRECT or " + Colors.bold +
-        Colors.fg.lightblue + "W" + Colors.reset + " for WRONG the letter " + Colors.bold + Colors.fg.lightblue +
+        Colors.bold + Colors.fg.lightblue + "C" + Colors.reset + " for Correct or " + Colors.bold +
+        Colors.fg.lightblue + "W" + Colors.reset + " for Wrong the letter " + Colors.bold + Colors.fg.lightblue +
         letter + Colors.reset + " on position " + Colors.bold + Colors.fg.lightblue + str(position) + Colors.reset + " : ", end=""
         )
 
@@ -169,7 +169,7 @@ def contratulations_finish_decorator(check_words_function):
         if check_words_function(*args) :
             found_word, tries = list(args)
             print("\n\n" + Colors.bg.lightgreen + "C O N G R A T U L A T I O N S   ! ! !"+Colors.reset)
-            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + list(found_word)[0] + Colors.reset + f" in {tries} tries" )
+            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + list(found_word)[0] + Colors.reset + f" in {tries-1} tries" )
         return check_words_function(*args)
     return wrapper
 
@@ -217,7 +217,7 @@ if __name__ == '__main__':
             if (letter not in all_excluded_letters or position not in all_correct_position_letters or letter not in
                     all_wrong_position_letters[position]):
                 print(
-                    "pos: " + str(position) + ".  letter: " + Colors.fg.yellow + Colors.bg.blue + Colors.bold + letter + Colors.reset +
+                    "\npos: " + str(position) + ".  letter: " + Colors.fg.yellow + Colors.bg.blue + Colors.bold + letter + Colors.reset +
                     "  from word " + Colors.bg.yellow + Colors.underline + word + Colors.reset
                     )
 
@@ -226,6 +226,11 @@ if __name__ == '__main__':
                     if check_only_one_position_left_for_letter(letter, all_correct_position_letters, all_wrong_position_letters):
                         all_correct_position_letters = add_exact_position(letter , position, all_correct_position_letters)
                         print_all_words_set(all_correct_position_letters, all_wrong_position_letters, all_excluded_letters, all_words_set)
+
+                    elif position in all_correct_position_letters :
+                        if all_correct_position_letters[position] == letter:
+                            continue
+                            # print("Letter ", letter, f" is at position {position}")
 
                     else :      # Correct / Wrong Position Letter Dialog
                         print("\nLetter ", letter, "is already within word. So we need only to establish its position")
