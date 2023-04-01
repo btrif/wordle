@@ -13,7 +13,7 @@ from utils import current_session_local, process_query_result_into_set, \
     exclude_letters_from_word_filter, \
     exact_letter_positions_filter, exclude_letter_positions_filter, Colors, only_words_containing_letters_filter
 
-from utils import get_all_words_query
+from utils import get_all_words_query, Score
 from dataclasses import dataclass
 
 @dataclass
@@ -55,7 +55,8 @@ def add_wrong_position(letter: str, position: int, all_wrong_position_letters: d
 
 
 def print_remaining_words(all_excluded_letters, all_correct_position_letters, all_wrong_position_letters, word_letters, all_words_set):
-    print(f"\nWORDS: \n{sorted(all_words_set)}")
+    words_score = Score(all_words_set).all_words_score()
+    print(f"\nWORDS: \n{words_score}")
     print("There are " + Colors.bold + Colors.bg.yellow + f"{len(all_words_set)}" + Colors.reset + " words with conditions: ")
     print(f"word_letters : {word_letters}")
     print(f"excluded_letters : {all_excluded_letters}")
@@ -68,7 +69,7 @@ def print_inclusion_exclusion(letter):
     print(
             Colors.bold + Colors.fg.lightblue + "E" + Colors.reset + " to Exclude or " +
             Colors.fg.lightblue + Colors.bold + "I" + Colors.reset + " to Include the letter" + Colors.reset + " " +
-            Colors.fg.blue + Colors.bold + letter + Colors.reset + ": ",
+            Colors.fg.blue + Colors.bold + letter.upper() + Colors.reset + ": ",
             end=""
             )
 
@@ -78,7 +79,7 @@ def print_inclusion_good_or_bad_position():
     print(
         Colors.bold + Colors.fg.lightblue + "C" + Colors.reset + " for Correct or " + Colors.bold +
         Colors.fg.lightblue + "W" + Colors.reset + " for Wrong the letter " + Colors.bold + Colors.fg.lightblue +
-        letter + Colors.reset + " on position " + Colors.bold + Colors.fg.lightblue + str(position) + Colors.reset + " : ", end=""
+        letter.upper() + Colors.reset + " on position " + Colors.bold + Colors.fg.lightblue + str(position) + Colors.reset + " : ", end=""
         )
 
 
@@ -169,7 +170,7 @@ def contratulations_finish_decorator(check_words_function):
         if check_words_function(*args) :
             found_word, tries = list(args)
             print("\n\n" + Colors.bg.lightgreen + "C O N G R A T U L A T I O N S   ! ! !"+Colors.reset)
-            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + list(found_word)[0] + Colors.reset + f" in {tries-1} tries" )
+            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + list(found_word)[0].upper() + Colors.reset + f" in {tries-1} tries" )
         return check_words_function(*args)
     return wrapper
 
@@ -217,8 +218,8 @@ if __name__ == '__main__':
             if (letter not in all_excluded_letters or position not in all_correct_position_letters or letter not in
                     all_wrong_position_letters[position]):
                 print(
-                    "\npos: " + str(position) + ".  letter: " + Colors.fg.yellow + Colors.bg.blue + Colors.bold + letter + Colors.reset +
-                    "  from word " + Colors.bg.yellow + Colors.underline + word + Colors.reset
+                    "\npos: " + str(position) + ".  letter: " + Colors.fg.yellow + Colors.bg.blue + Colors.bold + letter.upper() + Colors.reset +
+                    "  from word " + Colors.bg.yellow + Colors.underline + word.upper() + Colors.reset
                     )
 
                 if letter in word_letters:

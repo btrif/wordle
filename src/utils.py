@@ -209,13 +209,12 @@ class Score():
 
     def all_letters_score(self) -> dict:
         ''' The letter score represents in how many words a given letter is present. It must be only present,
-        it does not
-            count if that letter is repeated in that word'''
+        it does not  count if that letter is repeated in that word'''
         most_letters = dict()
         for letter in string.ascii_lowercase:
             words_with_letter = words_containing_given_letter(letter, self.all_words)
             how_many = len(words_with_letter)
-            print(f"{letter}.   {how_many}    {words_with_letter}")
+            # print(f"{letter}.   {how_many}    {words_with_letter}")
             most_letters[letter] = how_many
 
         return most_letters     # return sorted(most_letters.items(), key=lambda x: x[1], reverse=True)
@@ -231,6 +230,7 @@ class Score():
 
 
     def all_words_score(self) -> dict:
+        ''' a dictionary containing the score for all the words in the set '''
         words_score = dict()
         for word in self.all_words:
             words_score[word] = self.word_score(word)
