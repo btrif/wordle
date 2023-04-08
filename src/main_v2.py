@@ -170,7 +170,7 @@ def contratulations_finish_decorator(check_words_function):
         if check_words_function(*args) :
             found_word, tries = list(args)
             print("\n\n" + Colors.bg.lightgreen + "C O N G R A T U L A T I O N S   ! ! !"+Colors.reset)
-            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + list(found_word)[0].upper() + Colors.reset + f" in {tries-1} tries" )
+            print("you found the word : " + Colors.bg.black + Colors.fg.yellow + list(found_word)[0].upper() + Colors.reset + f" in {tries} tries" )
         return check_words_function(*args)
     return wrapper
 
