@@ -247,3 +247,7 @@ if __name__ == '__main__':
                                 letter, position, all_excluded_letters, all_correct_position_letters, word_letters,
                                 all_wrong_position_letters, all_words_set
                                 )
+
+        # Happy Ending 2 , the word was found
+        if check_only_one_word_remaining(all_words_set, choice) :
+            break
