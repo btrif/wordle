@@ -249,5 +249,5 @@ if __name__ == '__main__':
                                 )
 
         # Happy Ending 2 , the word was found
-        if check_only_one_word_remaining(all_words_set, choice) :
+        if check_only_one_word_remaining(all_words_set, choice+1) :
             break
