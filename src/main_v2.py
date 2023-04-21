@@ -27,9 +27,9 @@ class WordCharacteristics():
 
 
 
-def print_all_words_set(all_exact_positions, all_wrong_positions, all_excluded_letters, all_words_set):
+def print_all_words_set(all_correct_positions, all_wrong_positions, all_excluded_letters, all_words_set):
     print(f"\nAll the words available with :\n {all_words_set}")
-    print(f"all_exact_positions: {all_exact_positions}")
+    print(f"all_correct_positions: {all_correct_positions}")
     print(f"all_wrong_positions: {all_wrong_positions}")
     print(f"all_excluded_letters: {all_excluded_letters}")
 
@@ -249,5 +249,7 @@ if __name__ == '__main__':
                                 )
 
         # Happy Ending 2 , the word was found
-        if check_only_one_word_remaining(all_words_set, choice+1) :
+        if len(all_correct_position_letters) < 5 :
+            choice +=1
+        if check_only_one_word_remaining(all_words_set, choice) :
             break
