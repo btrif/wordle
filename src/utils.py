@@ -202,6 +202,10 @@ if __name__ == '__main__':
 
 
 class Score():
+    ''' Determines the overall score of a collection of words.
+        - it takes all the words and computes the most popular letter
+       - it generates a score based on the presence of the letter.
+       - the score is dynamic and determined on how many words the set contains    '''
     def __init__(self, all_words):
         self.all_words = all_words
         self.letter_scores = self.all_letters_score()

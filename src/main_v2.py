@@ -198,6 +198,8 @@ if __name__ == '__main__':
         # Fail Ending,   Did not find the word in 6 tries
         if choice == 7:
             print("\n" + Colors.bg.red + "You lost. You exhausted all the 6 tries." + Colors.reset)
+            print_remaining_words(all_excluded_letters, all_correct_position_letters, all_wrong_position_letters, word_letters, all_words_set)
+            break
 
         # Happy Ending, the word was found
         if check_only_one_word_remaining(all_words_set, choice) :
