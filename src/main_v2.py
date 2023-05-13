@@ -69,7 +69,7 @@ def print_inclusion_exclusion(letter):
     print(
             Colors.bold + Colors.fg.lightblue + "E" + Colors.reset + " to Exclude or " +
             Colors.fg.lightblue + Colors.bold + "I" + Colors.reset + " to Include the letter" + Colors.reset + " " +
-            Colors.fg.blue + Colors.bold + letter.upper() + Colors.reset + ": ",
+            Colors.fg.yellow + Colors.bold + Colors.bg.blue + letter.upper() + Colors.reset + ": ",
             end=""
             )
 
@@ -78,7 +78,7 @@ def print_inclusion_good_or_bad_position():
     print("\nPress Enter to continue or ... Press")
     print(
         Colors.bold + Colors.fg.lightblue + "C" + Colors.reset + " for Correct or " + Colors.bold +
-        Colors.fg.lightblue + "W" + Colors.reset + " for Wrong the letter " + Colors.bold + Colors.fg.lightblue +
+        Colors.fg.lightblue + "W" + Colors.reset + " for Wrong the letter " + Colors.bold + Colors.fg.yellow + Colors.bg.blue +
         letter.upper() + Colors.reset + " on position " + Colors.bold + Colors.fg.lightblue + str(position) + Colors.reset + " : ", end=""
         )
 
@@ -148,8 +148,8 @@ def check_only_one_position_left_for_letter(letter:str, all_correct_position_let
     ''' It will  In the case in which we have a letter which has only one remaining option, it will automatically
     place it in the right place. Examples will help understand better the situations:
     Example 1:  position=2, letter=r  , all_correct_position_letters = { 0:'e'}, all_wrong_position_letters = { 1: ['x', 'r'], 3:['r'], 4:['r'] }
-    In this case it is clear that letter 'r' is not at 0 as it is occupied already by 'e'. We also have the wrong positions of : 1, 3, 4.
-    this means that the only remaining available place for letter 'r' is at position 2
+    In this case it is clear that letter 'r' is not at 0 as it is occupied already by 'e'. We also have the wrong positions of : 1, 3, 4 for letter 'r'.
+    This means that the only remaining available place for letter 'r' is at position 2.
     :returns : True, if only one position is left. False otherwise
     '''
 
@@ -236,7 +236,8 @@ if __name__ == '__main__':
                             # print("Letter ", letter, f" is at position {position}")
 
                     else :      # Correct / Wrong Position Letter Dialog
-                        print("\nLetter ", letter, "is already within word. So we need only to establish its position")
+                        print("\nLetter " + Colors.bg.blue + Colors.fg.yellow + letter.upper() + Colors.reset + " is "
+                                                                                                              "already within word. So we need only to establish its position")
                         all_words_set, all_correct_position_letters, all_wrong_position_letters =  \
                             correct_or_wrong_position_letter_dialog(letter,
                                                                     position,
@@ -252,6 +253,7 @@ if __name__ == '__main__':
 
         # Happy Ending 2 , the word was found
         if len(all_correct_position_letters) < 5 :
+            print_remaining_words(all_excluded_letters, all_correct_position_letters, all_wrong_position_letters, word_letters, all_words_set)
             choice +=1
         if check_only_one_word_remaining(all_words_set, choice) :
             break
