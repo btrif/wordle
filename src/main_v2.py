@@ -91,7 +91,7 @@ def correct_or_wrong_position_letter_dialog(letter, position, all_correct_positi
         correct_wrong_position_choice = False
         while correct_wrong_position_choice not in {"C", "W", ""}:
             print_inclusion_good_or_bad_position()
-            correct_wrong_position_choice = input()
+            correct_wrong_position_choice = input().upper()
 
             ### CORRECT Position
             if correct_wrong_position_choice == 'C':
@@ -115,10 +115,10 @@ def correct_or_wrong_position_letter_dialog(letter, position, all_correct_positi
 def inclusion_exclusion_letter_dialog(letter, position, all_excluded_letters, all_correct_position_letters, word_letters, all_wrong_position_letters, all_words_set):
     ''' Dialog for Inclusion / Exclusion of letter'''
 
-    inclusion_exclusion_choice = False
+    inclusion_exclusion_choice = "False"
     while inclusion_exclusion_choice not in {"I", "E", ""}:
         print_inclusion_exclusion(letter)
-        inclusion_exclusion_choice = input()
+        inclusion_exclusion_choice = input().upper()
 
         ### EXCLUDE letter
         if inclusion_exclusion_choice == "E":
@@ -199,6 +199,11 @@ if __name__ == '__main__':
         if choice == 7:
             print("\n" + Colors.bg.red + "You lost. You exhausted all the 6 tries." + Colors.reset)
             print_remaining_words(all_excluded_letters, all_correct_position_letters, all_wrong_position_letters, word_letters, all_words_set)
+            break
+
+        # Missing word
+        if len(all_words_set) == 0 :
+            print("\n" + Colors.bg.red + "This word does not exist in the database." + Colors.reset)
             break
 
         # Happy Ending, the word was found
